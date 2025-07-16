@@ -20,6 +20,8 @@ const jobSchema = new mongoose.Schema({
     required: true,
   },
   isActive: { type: Boolean, default: true },
+  deadline: { type: String, required: true },
+  workLocation: { type: String, required: true },
 });
 
 const jobModel = mongoose.model("Job", jobSchema);

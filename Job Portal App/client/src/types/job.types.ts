@@ -9,6 +9,8 @@ export interface Job {
     max: number;
   };
   recruiterId: string;
+  deadline: string;
+  workLocation: string;
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;

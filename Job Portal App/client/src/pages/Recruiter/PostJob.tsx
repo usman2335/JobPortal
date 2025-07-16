@@ -21,7 +21,15 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Briefcase, Clock, User, Laptop, Globe } from "lucide-react";
+import {
+  Briefcase,
+  Clock,
+  User,
+  Laptop,
+  Globe,
+  Building,
+  Home,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { jobSchema, type JobFormData, type JobType } from "@/lib/zod-schemas";
 import { useCountryStore } from "@/store/authStore";
@@ -46,6 +54,11 @@ const jobTypes = [
   { label: "Contract", value: "contract", icon: User },
   { label: "Internship", value: "internship", icon: Laptop },
   { label: "Remote", value: "remote", icon: Globe },
+];
+const workLocation = [
+  { label: "On-site", value: "on-site", icon: Building },
+  { label: "Hybrid", value: "hybrid", icon: Home },
+  { label: "Remote", value: "remote", icon: User },
 ];
 
 export default function PostJobPage() {
@@ -81,10 +94,15 @@ export default function PostJobPage() {
       jobType: "full-time",
       salaryMin: "",
       salaryMax: "",
+      deadline: "",
+      workLocation: "on-site",
     },
   });
 
   const formValues = watch();
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
 
   const [validating, setValidating] = useState(false);
 
@@ -97,6 +115,8 @@ export default function PostJobPage() {
       "jobType",
       "salaryMin",
       "salaryMax",
+      "deadline",
+      "workLocation",
     ]);
     setValidating(false);
 
@@ -154,7 +174,7 @@ export default function PostJobPage() {
         })}
       </div>
 
-      <div className="flex-1 flex-col flex justify-center items-start p-10">
+      <div className="flex-1 flex-col flex justify-center items-start p-10 py-2">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-6">
           Post a Job
         </h1>
@@ -228,6 +248,33 @@ export default function PostJobPage() {
                     ))}
                   </div>
                 </div>
+                <div className="space-y-2">
+                  <Label className="text-sm text-muted-foreground">
+                    Work Location
+                  </Label>
+                  <div className="flex gap-5 flex-wrap">
+                    {workLocation.map(({ label, value, icon: Icon }) => (
+                      <Button
+                        key={value}
+                        variant={
+                          formValues.workLocation === value
+                            ? "default"
+                            : "outline"
+                        }
+                        onClick={() =>
+                          setValue(
+                            "workLocation",
+                            value as "remote" | "hybrid" | "on-site"
+                          )
+                        }
+                        className="justify-start gap-2 px-3 py-3 h-12 w-full max-w-[150px] text-sm"
+                      >
+                        <Icon className="w-4 h-4" />
+                        {label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
                 <Label className="text-muted-foreground">Salary Range</Label>
                 <Input
                   placeholder="Minimum Salary"
@@ -250,6 +297,15 @@ export default function PostJobPage() {
                     {errors.salaryMax.message}
                   </p>
                 )}
+                <Label className="text-muted-foreground">
+                  Application Deadline
+                </Label>
+                <Input type="date" {...register("deadline")} />
+                {errors.deadline && (
+                  <p className="text-sm text-red-500">
+                    {errors.deadline.message}
+                  </p>
+                )}
               </>
             )}
 
@@ -270,6 +326,9 @@ export default function PostJobPage() {
                 <p>
                   <strong>Salary:</strong> {formValues.salaryMin} -{" "}
                   {formValues.salaryMax}
+                </p>
+                <p>
+                  <strong>Deadline:</strong> {formValues.deadline}
                 </p>
               </div>
             )}

@@ -3,7 +3,15 @@ import { jobModel } from "../Models/Job";
 
 export const createJob = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { title, description, salaryRange, location, jobType } = req.body;
+    const {
+      title,
+      description,
+      salaryRange,
+      location,
+      jobType,
+      deadline,
+      workLocation,
+    } = req.body;
     const recruiterId = req.user.userId;
 
     const newJob = new jobModel({
@@ -12,8 +20,11 @@ export const createJob = async (req: Request, res: Response): Promise<any> => {
       salaryRange,
       location,
       jobType,
+      workLocation,
       recruiterId,
+      deadline,
     });
+    console.log(newJob);
     await newJob.save();
     return res.status(201).json({ message: "New job posted successfully" });
   } catch (error) {
@@ -22,12 +33,25 @@ export const createJob = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export const getAllJobs = async (req: Request, res: Response): Promise<any> => {
+export const getAllJobsOfRecruiter = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const recruiterId = req.user.userId;
     const jobs = await jobModel
       .find({ recruiterId })
       .populate("recruiterId", "name email");
+    return res.status(200).json(jobs);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const getAllJobs = async (req: Request, res: Response): Promise<any> => {
+  try {
+    // const recruiterId = req.user.userId;
+    const jobs = await jobModel.find();
     return res.status(200).json(jobs);
   } catch (error) {
     console.error("Error fetching jobs:", error);

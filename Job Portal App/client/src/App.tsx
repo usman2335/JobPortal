@@ -8,12 +8,14 @@ import RegisterRecruiterPage from "./pages/Register/RegisterRecruiterPage";
 import RoleBasedRoute from "./components/Routes/RoleBasedRoute";
 import RecruiterHomePage from "./pages/Recruiter/RecruiterHomePage";
 import CandidateHomePage from "./pages/Candidate/CandidateHomePage";
-import RecruiterLayout from "./pages/Recruiter/RecruiterLayout";
+import RecruiterLayout from "./Layouts/RecruiterLayout";
+import CandidateLayout from "./Layouts/CandidateLayout";
 import PostJob from "./pages/Recruiter/PostJob";
 import ManageJob from "./pages/Recruiter/ManageJob";
 import EditJobPage from "./pages/Recruiter/EditJob";
 
 import { AnimatePresence } from "motion/react";
+import FindJob from "./pages/Candidate/FindJob";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -24,10 +26,11 @@ function AnimatedRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/register/candidate" element={<RegisterCandidatePage />} />
-        <Route path="/register/recruiter" element={<RegisterRecruiterPage />} />
-
         <Route element={<RoleBasedRoute allowedRoles={["recruiter"]} />}>
+          <Route
+            path="/register/recruiter"
+            element={<RegisterRecruiterPage />}
+          />
           <Route path="/recruiter" element={<RecruiterLayout />}>
             <Route path="dashboard" element={<RecruiterHomePage />} />
             <Route path="create-job" element={<PostJob />} />
@@ -37,7 +40,13 @@ function AnimatedRoutes() {
         </Route>
 
         <Route element={<RoleBasedRoute allowedRoles={["candidate"]} />}>
-          <Route path="/candidate/dashboard" element={<CandidateHomePage />} />
+          <Route
+            path="/register/candidate"
+            element={<RegisterCandidatePage />}
+          />
+          <Route path="/candidate/" element={<CandidateLayout />}>
+            <Route path="find-jobs" element={<FindJob />} />
+          </Route>
         </Route>
       </Routes>
     </AnimatePresence>

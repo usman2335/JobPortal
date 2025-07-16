@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useAuthStore } from "@/store/authStore";
+import { useNavigate } from "react-router-dom";
 // import { toast } from "sonner";
 
 export function RegisterForm({
@@ -43,6 +44,7 @@ export function RegisterForm({
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState<string | null>(null);
   const [errorDialog, setErrorDialog] = useState(false);
+  const navigate = useNavigate();
   // const [role, setRole] = useState<string>("");
   const { setUser } = useAuthStore();
 
@@ -209,7 +211,7 @@ export function RegisterForm({
           <Button
             onClick={() => {
               setSuccessOpen(false);
-              // router.push("/login"); // Navigate to login
+              navigate("/login");
             }}
           >
             Go to Login

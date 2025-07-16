@@ -81,8 +81,10 @@ export const jobSchema = z.object({
     "internship",
     "remote",
   ]),
+  workLocation: z.enum(["on-site", "hybrid", "remote"]),
   salaryMin: z.string().min(1, "Required"),
   salaryMax: z.string().min(1, "Required"),
+  deadline: z.string(),
 });
 export type JobType = z.infer<typeof jobSchema>["jobType"];
 

@@ -16,6 +16,12 @@ export const createJob = async (JobPayload: JobFormData) => {
 
 export const getJobs = async (): Promise<Job[]> => {
   const res = await api.get<Job[]>(`/job/get-jobs`);
+  console.log(res);
+  return res.data;
+};
+export const getJobsRecruiter = async (): Promise<Job[]> => {
+  const res = await api.get<Job[]>(`/job/get-jobs-recruiter`);
+  console.log(res);
   return res.data;
 };
 

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Pencil, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { deleteJob, getJobs } from "@/services/job.service";
+import { deleteJob, getJobsRecruiter } from "@/services/job.service";
 import { DeleteJobButton } from "@/components/Buttons/DeleteJobButton";
 import { Badge } from "@/components/ui/badge";
 
@@ -35,7 +35,7 @@ export default function ManageJob() {
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const res = await getJobs();
+      const res = await getJobsRecruiter();
       console.log("jobs:", res);
       setJobs(res);
     } catch (err) {
@@ -94,7 +94,9 @@ export default function ManageJob() {
                   <TableRow key={job._id}>
                     <TableCell>{job.title}</TableCell>
                     <TableCell>{job.location}</TableCell>
-                    <TableCell>{job.description}</TableCell>
+                    <TableCell className=" max-w-[250px] truncate">
+                      {job.description}
+                    </TableCell>
                     <TableCell>
                       <Badge variant="default">{job.jobType}</Badge>
                     </TableCell>

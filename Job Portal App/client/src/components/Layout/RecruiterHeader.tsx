@@ -3,10 +3,10 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuthStore } from "@/store/authStore";
 import { UserDropdown } from "../Navigation/UserDropdown";
 
-interface SiteHeaderProps {
+interface RecruiterHeaderProps {
   title: string;
 }
-export function SiteHeader({ title }: SiteHeaderProps) {
+export function RecruiterHeader({ title }: RecruiterHeaderProps) {
   const user = useAuthStore((state) => state.user);
 
   return (

@@ -54,6 +54,7 @@ export function UserDropdown({
       <DropdownMenuContent align="end">
         <DropdownMenuLabel className="text-xs">Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem>Profile</DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
 
         <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>

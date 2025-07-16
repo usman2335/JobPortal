@@ -1,6 +1,6 @@
 // src/layouts/RecruiterLayout.tsx
 import { AppSidebar } from "@/components/Layout/app-sidebar";
-import { SiteHeader } from "@/components/Layout/SiteHeader";
+import { RecruiterHeader } from "@/components/Layout/RecruiterHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
@@ -13,7 +13,7 @@ export default function RecruiterLayout() {
       <div className="flex w-full">
         <AppSidebar />
         <main className="py-4 w-full">
-          <SiteHeader title="Recruiter Panel" />
+          <RecruiterHeader title="Recruiter Panel" />
 
           <AnimatePresence mode="wait">
             <motion.div
