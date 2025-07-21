@@ -7,6 +7,8 @@ import {
   getAllJobsOfRecruiter,
   getJobById,
   updateJob,
+  saveJob,
+  getSavedJobs,
 } from "../Controllers/job.controller";
 const router = express.Router();
 
@@ -16,5 +18,7 @@ router.get("/get-jobs", authMiddleware, getAllJobs);
 router.get("/get-job/:id", authMiddleware, getJobById);
 router.delete("/delete-job/:id", authMiddleware, deleteJob);
 router.put("/update-job/:id", authMiddleware, updateJob);
+router.post("/:jobId/save", authMiddleware, saveJob);
+router.get("/saved-jobs", authMiddleware, getSavedJobs);
 
 export default router;

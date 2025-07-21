@@ -45,3 +45,14 @@ export const editJob = async (id: string, JobPayload: JobFormData) => {
   };
   await api.put(`/job/update-job/${id}`, payload);
 };
+
+export const saveJob = async (id: string) => {
+  const res = await api.post(`job/${id}/save`);
+  return res.data;
+};
+
+export const getSavedJobs = async (): Promise<Job[]> => {
+  const res = await api.get<Job[]>(`/job/saved-jobs`);
+  console.log(res);
+  return res.data;
+};

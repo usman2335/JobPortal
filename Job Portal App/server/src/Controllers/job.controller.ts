@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { jobModel } from "../Models/Job";
+import { candidateModel } from "../Models/Candidate";
+import mongoose from "mongoose";
 
 export const createJob = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -112,5 +114,54 @@ export const updateJob = async (req: Request, res: Response): Promise<any> => {
   } catch (error) {
     console.error("Error updating job:", error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const saveJob = async (req: Request, res: Response): Promise<any> => {
+  const userId = req.user.userId;
+  console.log(userId);
+  console.log(req.user);
+  const jobId = req.params.jobId;
+  const jobObjectId = new mongoose.Types.ObjectId(jobId);
+
+  try {
+    const candidate = await candidateModel.findOne({ userId });
+
+    if (!candidate) {
+      return res.status(404).json({ message: "Candidate not found" });
+    }
+
+    if (candidate.savedJobs.includes(jobObjectId)) {
+      return res.status(400).json({ message: "Job already saved" });
+    }
+
+    candidate.savedJobs.push(jobObjectId);
+    await candidate.save();
+
+    res.status(200).json({ message: "Job saved successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error saving job", error });
+  }
+};
+
+export const getSavedJobs = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const userId = req.user.userId;
+
+  try {
+    const candidate = await candidateModel
+      .findOne({ userId })
+      .populate("savedJobs");
+    console.log("candidate is:", candidate);
+
+    if (!candidate) {
+      return res.status(404).json({ message: "Candidate not found" });
+    }
+
+    res.status(200).json(candidate.savedJobs);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching saved jobs", error });
   }
 };

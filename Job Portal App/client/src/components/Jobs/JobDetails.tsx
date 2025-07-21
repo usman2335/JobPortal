@@ -1,20 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useJobStore } from "@/store/jobStore";
 import { Button } from "../ui/button";
 import { Bookmark } from "lucide-react";
+import { useCandidateStore } from "@/store/candidateStore";
+import { toast } from "sonner";
 
 const JobDetails = () => {
   const selectedJob = useJobStore((state) => state.selectedJob);
+  const fetchSavedJobs = useCandidateStore((state) => state.fetchSavedJobs);
+  const saveJob = useCandidateStore((state) => state.saveJob);
+  const savedJobs = useCandidateStore((state) => state.savedJobs);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isSavedState, setIsSavedState] = useState(false);
 
   const descriptionParagraphs =
     selectedJob?.description?.split("\n").filter((p) => p.trim() !== "") ?? [];
 
   const descriptionParagraphsLength = descriptionParagraphs.length;
+  useEffect(() => {
+    fetchSavedJobs();
+  }, [fetchSavedJobs]);
+  useEffect(() => {
+    // Sync local state with global savedJobs
+    if (selectedJob) {
+      const saved = savedJobs.some((j) => j._id === selectedJob._id);
+      setIsSavedState(saved);
+    }
+  }, [savedJobs, selectedJob]);
 
   if (!selectedJob) return null;
+
+  const isSaved = savedJobs.some((j) => j._id === selectedJob._id);
+  const handleSave = async () => {
+    await saveJob(selectedJob._id);
+    setIsSavedState(true);
+    toast.success("Job saved successfully!");
+  };
 
   return (
     <Card className="w-full mt-2">
@@ -36,9 +59,13 @@ const JobDetails = () => {
           </div>
           <div className="flex gap-3">
             <Button className="rounded-sm ">Apply Now</Button>
-            <Button className=" rounded-sm bg-secondary text-secondary-foreground hover:bg-background">
-              Save
-              <Bookmark />
+            <Button
+              className="rounded-sm bg-secondary text-secondary-foreground hover:bg-background"
+              disabled={isSaved}
+              onClick={handleSave}
+            >
+              {isSavedState ? "Saved" : "Save Job"}
+              <Bookmark className="ml-2 w-4 h-4" />
             </Button>
           </div>
         </div>

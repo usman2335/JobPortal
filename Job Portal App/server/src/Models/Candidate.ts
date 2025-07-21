@@ -28,6 +28,12 @@ const candidateSchema = new mongoose.Schema({
   linkedin: { type: String },
   github: { type: String },
   portfolio: { type: String },
+
+  savedJobs: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Job",
+    default: [],
+  },
 });
 
 const candidateModel = mongoose.model("Candidate", candidateSchema);

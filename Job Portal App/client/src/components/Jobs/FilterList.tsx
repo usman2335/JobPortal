@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Slider } from "../ui/slider";
+import { useJobStore } from "@/store/jobStore";
 
 export function FilterList({
   onFilterChange,
@@ -21,6 +22,7 @@ export function FilterList({
   const [workLocation, setWorkLocation] = useState<string[]>([]);
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState<number[]>([5000]);
+  const { applyFilters, resetFilters } = useJobStore();
 
   const handleCheckboxChange = (
     value: string,
@@ -32,16 +34,17 @@ export function FilterList({
     );
   };
 
-  const resetFilters = () => {
+  const handleResetFilters = () => {
     setJobType([]);
     setWorkLocation([]);
     setLocation("");
     onFilterChange({});
     setSalary([0]);
+    resetFilters();
   };
 
-  const applyFilters = () => {
-    onFilterChange({ jobType, workLocation, location });
+  const handleApply = () => {
+    applyFilters({ jobType, workLocation, location });
   };
 
   return (
@@ -53,7 +56,7 @@ export function FilterList({
               <CardTitle>Filters</CardTitle>
               <Button
                 variant="ghost"
-                onClick={resetFilters}
+                onClick={handleResetFilters}
                 className="text-primary p-0 gap-0 border-0"
               >
                 Reset All
@@ -137,7 +140,7 @@ export function FilterList({
         </CardContent>
 
         <CardFooter>
-          <Button onClick={applyFilters} className="w-full">
+          <Button onClick={handleApply} className="w-full">
             Apply Filters
           </Button>
         </CardFooter>

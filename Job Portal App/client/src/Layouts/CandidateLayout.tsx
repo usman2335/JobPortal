@@ -3,6 +3,7 @@ import { CandidateHeader } from "@/components/Layout/CandidateHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
+import { Toaster } from "sonner";
 
 export default function RecruiterLayout() {
   const location = useLocation();
@@ -26,6 +27,7 @@ export default function RecruiterLayout() {
             </motion.div>
           </AnimatePresence>
         </main>
+        <Toaster></Toaster>
       </div>
     </SidebarProvider>
   );
